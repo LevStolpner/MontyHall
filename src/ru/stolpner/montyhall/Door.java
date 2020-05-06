@@ -1,19 +1,37 @@
 package ru.stolpner.montyhall;
 
 public class Door {
+    private final int number;
     private final boolean prize;
-    private final boolean open;
+    private boolean open;
 
-    public Door(boolean prize, boolean open) {
+    public Door(int number, boolean prize) {
+        this.number = number;
         this.prize = prize;
-        this.open = open;
+        this.open = false;
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     public boolean hasPrize() {
         return prize;
     }
 
+    public boolean hasNoPrize() {
+        return !prize;
+    }
+
     public boolean isOpen() {
         return open;
+    }
+
+    public boolean isClosed() {
+        return !open;
+    }
+
+    public void open() {
+        this.open = true;
     }
 }

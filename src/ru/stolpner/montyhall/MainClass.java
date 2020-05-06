@@ -1,10 +1,14 @@
 package ru.stolpner.montyhall;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class MainClass {
 
     private static final Random random = new Random();
+    private static final int NUMBER_OF_DOORS = 3;
 
     public static void main(String[] args) {
 
@@ -17,22 +21,52 @@ public class MainClass {
         //  5) Think of different strategies to play with
         //  6) Implement up to 5 different strategies, compare them with random
 
-        Door[] doors = setupDoors(3);
+        List<Door> doors = setupDoors();
 
     }
 
-    private static Door[] setupDoors(int numberOfDoors) {
-        int luckyDoorNumber = random.nextInt(numberOfDoors);
+    private static List<Door> setupDoors() {
+        int prizeDoorNumber = random.nextInt(NUMBER_OF_DOORS);
 
-        Door[] doors = new Door[numberOfDoors];
-        for (int i = 0; i < numberOfDoors; i++) {
-            if (luckyDoorNumber == i) {
-                doors[i] = new Door(true, false);
-            } else {
-                doors[i] = new Door(false, false);
-            }
+        List<Door> doors = new ArrayList<>(NUMBER_OF_DOORS);
+        for (int i = 0; i < NUMBER_OF_DOORS; i++) {
+            doors.add(new Door(i, prizeDoorNumber == i));
         }
 
         return doors;
+    }
+
+    private static boolean playGameWithRandomStrategy(Door[] doors) {
+        int firstChosenDoor = random.nextInt(NUMBER_OF_DOORS);
+
+    }
+
+    private static Result openDoor(List<Door> doors, int chosenDoor) {
+        List<Door> doorsToOpen = doors.stream()
+                .filter(Door::isClosed)
+                .filter(Door::hasNoPrize)
+                .filter(door -> door.getNumber() != chosenDoor)
+                .collect(Collectors.toList());
+
+        if (doorsToOpen.isEmpty()) {
+            Door doorWithPrize = doors.stream()
+                    .filter(Door::hasPrize)
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("No door with prize found"));
+
+            return doorWithPrize.getNumber() == chosenDoor
+                    ? Result.GAME_WON
+                    : Result.GAME_LOST;
+        }
+
+        int doorToOpenNumber = random.nextInt(doorsToOpen.size());
+        doorsToOpen.get(doorToOpenNumber).open();
+        return Result.DOOR_OPENED;
+    }
+
+    enum Result {
+        DOOR_OPENED,
+        GAME_LOST,
+        GAME_WON
     }
 }
