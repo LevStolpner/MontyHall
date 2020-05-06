@@ -22,7 +22,9 @@ public class MainClass {
         //  6) Implement up to 5 different strategies, compare them with random
 
         List<Door> doors = setupDoors();
+        System.out.println(doors);
 
+        playGameWithRandomStrategy(doors);
     }
 
     private static List<Door> setupDoors() {
@@ -36,9 +38,35 @@ public class MainClass {
         return doors;
     }
 
-    private static boolean playGameWithRandomStrategy(Door[] doors) {
-        int firstChosenDoor = random.nextInt(NUMBER_OF_DOORS);
+    private static boolean playGameWithRandomStrategy(List<Door> doors) {
+        while (true) {
+            int chosenDoor = chooseRandomDoor(doors);
+            System.out.println("Chosen door number " + chosenDoor);
 
+            Result result = openDoor(doors, chosenDoor);
+            switch (result) {
+                case DOOR_OPENED:
+                    System.out.println(doors);
+                    System.out.println("Opened door, continuing.");
+                    continue;
+                case GAME_WON:
+                    System.out.println("Game is won");
+                    return true;
+                case GAME_LOST:
+                    System.out.println(doors);
+                    System.out.println("Game is lost");
+                    return false;
+            }
+        }
+    }
+
+    private static int chooseRandomDoor(List<Door> doors) {
+        List<Door> doorsToChooseFrom = doors.stream()
+                .filter(Door::isClosed)
+                .collect(Collectors.toList());
+
+        int chosenDoor = random.nextInt(doorsToChooseFrom.size());
+        return doorsToChooseFrom.get(chosenDoor).getNumber();
     }
 
     private static Result openDoor(List<Door> doors, int chosenDoor) {

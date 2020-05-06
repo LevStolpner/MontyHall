@@ -34,4 +34,9 @@ public class Door {
     public void open() {
         this.open = true;
     }
+
+    @Override
+    public String toString() {
+        return "Door{" + number + ", " + (prize ? "lucky" : "empty") + ", " + (open ? "open" : "closed") + '}';
+    }
 }
