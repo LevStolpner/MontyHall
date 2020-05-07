@@ -37,6 +37,6 @@ public class Door {
 
     @Override
     public String toString() {
-        return "Door{" + number + ", " + (prize ? "lucky" : "empty") + ", " + (open ? "open" : "closed") + '}';
+        return "{" + number + "-" + (open ? "open" : "closed") + (prize ? "-lucky" : "") + '}';
     }
 }

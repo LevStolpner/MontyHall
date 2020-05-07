@@ -1,5 +1,6 @@
 package ru.stolpner.montyhall;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -8,23 +9,32 @@ import java.util.stream.Collectors;
 public class MainClass {
 
     private static final Random random = new Random();
+    private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("##.##%");
     private static final int NUMBER_OF_DOORS = 3;
+    private static final int NUMBER_OF_RUNS = 10000;
 
     public static void main(String[] args) {
 
-        //TODO I want to test some theories about Monty Hall problem
-        //  What I want to do in this project:
-        //  1) Create primitive simulation of one Monty Hall game with 3 doors and random strategy
-        //  2) Expand primitive simulation to n doors and random strategy
-        //  3) Store results for all games, print statistics out
-        //  4) Try random strategy for huge amount of games with 1..n doors, compare results
-        //  5) Think of different strategies to play with
-        //  6) Implement up to 5 different strategies, compare them with random
+        //TODO
+        //  1) Store results for all games, print statistics out
+        //  2) Try random strategy for huge amount of games with 1..n doors, compare results
+        //  3) Think of different strategies to play with
+        //  4) Implement up to 5 different strategies, compare them with random
 
-        List<Door> doors = setupDoors();
-        System.out.println(doors);
+        int successCounter = 0;
+        for (int i = 0; i < NUMBER_OF_RUNS; i++) {
+            List<Door> doors = setupDoors();
+            System.out.println(doors);
+            boolean success = playGameWithRandomStrategy(doors);
+            successCounter += success ? 1 : 0;
+        }
+        System.out.println("Calculation finished.");
+        System.out.println(String.format("Number of games played for %d doors=%d", NUMBER_OF_DOORS, NUMBER_OF_RUNS));
 
-        playGameWithRandomStrategy(doors);
+        double successPercentage = successCounter / (double) NUMBER_OF_RUNS;
+        String formattedPercentage = PERCENTAGE_FORMAT.format(successPercentage);
+        System.out.println(String.format("Success percentage=%s", formattedPercentage));
+
     }
 
     private static List<Door> setupDoors() {
