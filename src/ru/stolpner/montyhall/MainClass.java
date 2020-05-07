@@ -9,30 +9,32 @@ import java.util.stream.Collectors;
 public class MainClass {
 
     private static final Random random = new Random();
+    public static final PlayerStrategy[] strategies = {new RandomStrategy()};
     private static final int NUMBER_OF_RUNS = 10000;
     private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("##.##%");
 
     public static void main(String[] args) {
         //TODO implement different strategies, compare results
 
-        for (int i = 3; i < 7; i++) {
-            runCalculation(i, new RandomStrategy());
+        for (PlayerStrategy strategy : strategies) {
+            for (int i = 3; i < 7; i++) {
+                runCalculation(i, strategy);
+            }
         }
     }
-    
-    private static void runCalculation(int numberOfDoors, PlayerStrategy playerStrategy) {
+
+    private static void runCalculation(int numberOfDoors, PlayerStrategy strategy) {
         int successCounter = 0;
         for (int i = 0; i < NUMBER_OF_RUNS; i++) {
             List<Door> doors = setupDoors(numberOfDoors);
-            boolean success = playGame(doors, playerStrategy);
+            boolean success = playGame(doors, strategy);
             successCounter += success ? 1 : 0;
         }
-        System.out.println("Calculation finished.");
-        System.out.println(String.format("Number of games played for %d doors=%d", numberOfDoors, NUMBER_OF_RUNS));
-
         double successPercentage = successCounter / (double) NUMBER_OF_RUNS;
         String formattedPercentage = PERCENTAGE_FORMAT.format(successPercentage);
-        System.out.println(String.format("Success percentage=%s", formattedPercentage));
+
+        System.out.println(String.format("Strategy=%s. Doors=%d. Games=%s. Success rate=%s",
+                strategy.getName(), numberOfDoors, NUMBER_OF_RUNS, formattedPercentage));
     }
 
     private static List<Door> setupDoors(int numberOfDoors) {
