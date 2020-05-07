@@ -16,8 +16,9 @@ public class MainClass {
     public static void main(String[] args) {
         //TODO implement different strategies, compare results
 
-        for (PlayerStrategy strategy : strategies) {
-            for (int i = 3; i < 7; i++) {
+        for (int i = 3; i < 6; i++) {
+            System.out.println("Number of doors=" + i + ".");
+            for (PlayerStrategy strategy : strategies) {
                 runGames(i, strategy);
             }
         }
@@ -39,8 +40,7 @@ public class MainClass {
         double successPercentage = successCounter / (double) NUMBER_OF_RUNS;
         String formattedPercentage = PERCENTAGE_FORMAT.format(successPercentage);
 
-        System.out.println(String.format("Strategy=%s. Doors=%d. Games=%s. Success rate=%s",
-                strategy.getName(), numberOfDoors, NUMBER_OF_RUNS, formattedPercentage));
+        System.out.println(String.format("Strategy=%s. Success=%s", strategy.getName(), formattedPercentage));
     }
 
     /**
