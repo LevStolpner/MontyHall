@@ -10,7 +10,7 @@ public class MainClass {
 
     private static final Random random = new Random();
     private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("##.##%");
-    private static final int NUMBER_OF_DOORS = 3;
+    private static final int NUMBER_OF_DOORS = 5;
     private static final int NUMBER_OF_RUNS = 10000;
 
     public static void main(String[] args) {
@@ -23,7 +23,6 @@ public class MainClass {
         int successCounter = 0;
         for (int i = 0; i < NUMBER_OF_RUNS; i++) {
             List<Door> doors = setupDoors();
-            System.out.println(doors);
             boolean success = playGameWithRandomStrategy(doors);
             successCounter += success ? 1 : 0;
         }
@@ -50,20 +49,14 @@ public class MainClass {
     private static boolean playGameWithRandomStrategy(List<Door> doors) {
         while (true) {
             int chosenDoor = chooseRandomDoor(doors);
-            System.out.println("Chosen door number " + chosenDoor);
 
             Result result = openDoor(doors, chosenDoor);
             switch (result) {
                 case DOOR_OPENED:
-                    System.out.println(doors);
-                    System.out.println("Opened door, continuing.");
                     continue;
                 case GAME_WON:
-                    System.out.println("Game is won");
                     return true;
                 case GAME_LOST:
-                    System.out.println(doors);
-                    System.out.println("Game is lost");
                     return false;
             }
         }
