@@ -9,22 +9,22 @@ import java.util.stream.Collectors;
 public class MainClass {
 
     private static final Random random = new Random();
-    private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("##.##%");
     private static final int NUMBER_OF_RUNS = 10000;
+    private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("##.##%");
 
     public static void main(String[] args) {
         //TODO implement different strategies, compare results
 
         for (int i = 3; i < 7; i++) {
-            runCalculation(i);
+            runCalculation(i, new RandomStrategy());
         }
     }
     
-    private static void runCalculation(int numberOfDoors) {
+    private static void runCalculation(int numberOfDoors, PlayerStrategy playerStrategy) {
         int successCounter = 0;
         for (int i = 0; i < NUMBER_OF_RUNS; i++) {
             List<Door> doors = setupDoors(numberOfDoors);
-            boolean success = playGameWithRandomStrategy(doors);
+            boolean success = playGame(doors, playerStrategy);
             successCounter += success ? 1 : 0;
         }
         System.out.println("Calculation finished.");
@@ -46,9 +46,9 @@ public class MainClass {
         return doors;
     }
 
-    private static boolean playGameWithRandomStrategy(List<Door> doors) {
+    private static boolean playGame(List<Door> doors, PlayerStrategy playerStrategy) {
         while (true) {
-            int chosenDoor = chooseRandomDoor(doors);
+            int chosenDoor = playerStrategy.chooseDoor(doors);
 
             Result result = openDoor(doors, chosenDoor);
             switch (result) {
@@ -60,15 +60,6 @@ public class MainClass {
                     return false;
             }
         }
-    }
-
-    private static int chooseRandomDoor(List<Door> doors) {
-        List<Door> doorsToChooseFrom = doors.stream()
-                .filter(Door::isClosed)
-                .collect(Collectors.toList());
-
-        int chosenDoor = random.nextInt(doorsToChooseFrom.size());
-        return doorsToChooseFrom.get(chosenDoor).getNumber();
     }
 
     private static Result openDoor(List<Door> doors, int chosenDoor) {
