@@ -18,12 +18,18 @@ public class MainClass {
 
         for (PlayerStrategy strategy : strategies) {
             for (int i = 3; i < 7; i++) {
-                runCalculation(i, strategy);
+                runGames(i, strategy);
             }
         }
     }
 
-    private static void runCalculation(int numberOfDoors, PlayerStrategy strategy) {
+    /**
+     * Запускает игры для определенного количества дверей с определенной стратегией
+     *
+     * @param numberOfDoors количество дверей
+     * @param strategy      стратегия выбора дверей
+     */
+    private static void runGames(int numberOfDoors, PlayerStrategy strategy) {
         int successCounter = 0;
         for (int i = 0; i < NUMBER_OF_RUNS; i++) {
             List<Door> doors = setupDoors(numberOfDoors);
@@ -37,6 +43,12 @@ public class MainClass {
                 strategy.getName(), numberOfDoors, NUMBER_OF_RUNS, formattedPercentage));
     }
 
+    /**
+     * Подготовить список дверей для игры
+     *
+     * @param numberOfDoors количество дверей
+     * @return список дверей
+     */
     private static List<Door> setupDoors(int numberOfDoors) {
         int prizeDoorNumber = random.nextInt(numberOfDoors);
 
@@ -48,6 +60,13 @@ public class MainClass {
         return doors;
     }
 
+    /**
+     * Провести одну игру с заданными дверями и стратегией
+     *
+     * @param doors          двери
+     * @param playerStrategy стратегия выбора дверей
+     * @return true, если игра выиграна, иначе false
+     */
     private static boolean playGame(List<Door> doors, PlayerStrategy playerStrategy) {
         while (true) {
             int chosenDoor = playerStrategy.chooseDoor(doors);
@@ -64,6 +83,13 @@ public class MainClass {
         }
     }
 
+    /**
+     * Пытается открыть произвольную дверь без приза
+     *
+     * @param doors      двери
+     * @param chosenDoor выбранная игроком дверь
+     * @return результат попытки открытия двери
+     */
     private static Result openDoor(List<Door> doors, int chosenDoor) {
         List<Door> doorsToOpen = doors.stream()
                 .filter(Door::isClosed)
@@ -87,6 +113,9 @@ public class MainClass {
         return Result.DOOR_OPENED;
     }
 
+    /**
+     * Результат попытки открытия двери
+     */
     enum Result {
         DOOR_OPENED,
         GAME_LOST,
