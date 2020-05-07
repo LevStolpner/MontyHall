@@ -16,10 +16,9 @@ public class MainClass {
     public static void main(String[] args) {
 
         //TODO
-        //  1) Store results for all games, print statistics out
-        //  2) Try random strategy for huge amount of games with 1..n doors, compare results
-        //  3) Think of different strategies to play with
-        //  4) Implement up to 5 different strategies, compare them with random
+        //  1) Try random strategy for huge amount of games with 1..n doors, compare results
+        //  2) Think of different strategies to play with
+        //  3) Implement up to 5 different strategies, compare them with random
 
         int successCounter = 0;
         for (int i = 0; i < NUMBER_OF_RUNS; i++) {
