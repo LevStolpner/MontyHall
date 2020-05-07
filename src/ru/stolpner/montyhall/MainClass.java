@@ -14,9 +14,23 @@ public class MainClass {
     private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("##.##%");
 
     public static void main(String[] args) {
-        //TODO implement different strategies, compare results
+        //TODO implement strategies
+        //  - always picking between 2 doors (replacing second door if it was opened)
+        //  - always picking between 2 doors (stubborn if one was opened)
+        //  - always picking between 2 doors (random if one was opened)
+        //  - always picking between 2 doors (always changing if one was opened)
+        //  - always picking between 3 doors (replacing doors if they are opened)
+        //  - always picking between 3 doors (more stubborn if more doors are opened)
+        //  - always picking between 3 doors (random if one was opened)
+        //  - always picking between 3 doors (always changing if one was opened)
+        //  - always picking between 4 doors (replacing doors if they are opened)
+        //  - always picking between 4 doors (more stubborn if more doors are opened)
+        //  - always picking between 4 doors (random if one was opened)
+        //  - always picking between 4 doors (always changing if one was opened)
+        //  - always changing doors (never picking previous one)
+        //TODO strategy needs 1 more method -> needed amount of doors
 
-        for (int i = 3; i < 6; i++) {
+        for (int i = 3; i < 11; i++) {
             System.out.println("Number of doors=" + i + ".");
             for (PlayerStrategy strategy : strategies) {
                 runGames(i, strategy);
