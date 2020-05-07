@@ -10,36 +10,36 @@ public class MainClass {
 
     private static final Random random = new Random();
     private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("##.##%");
-    private static final int NUMBER_OF_DOORS = 5;
     private static final int NUMBER_OF_RUNS = 10000;
 
     public static void main(String[] args) {
+        //TODO implement different strategies, compare results
 
-        //TODO
-        //  1) Try random strategy for huge amount of games with 1..n doors, compare results
-        //  2) Think of different strategies to play with
-        //  3) Implement up to 5 different strategies, compare them with random
-
+        for (int i = 3; i < 7; i++) {
+            runCalculation(i);
+        }
+    }
+    
+    private static void runCalculation(int numberOfDoors) {
         int successCounter = 0;
         for (int i = 0; i < NUMBER_OF_RUNS; i++) {
-            List<Door> doors = setupDoors();
+            List<Door> doors = setupDoors(numberOfDoors);
             boolean success = playGameWithRandomStrategy(doors);
             successCounter += success ? 1 : 0;
         }
         System.out.println("Calculation finished.");
-        System.out.println(String.format("Number of games played for %d doors=%d", NUMBER_OF_DOORS, NUMBER_OF_RUNS));
+        System.out.println(String.format("Number of games played for %d doors=%d", numberOfDoors, NUMBER_OF_RUNS));
 
         double successPercentage = successCounter / (double) NUMBER_OF_RUNS;
         String formattedPercentage = PERCENTAGE_FORMAT.format(successPercentage);
         System.out.println(String.format("Success percentage=%s", formattedPercentage));
-
     }
 
-    private static List<Door> setupDoors() {
-        int prizeDoorNumber = random.nextInt(NUMBER_OF_DOORS);
+    private static List<Door> setupDoors(int numberOfDoors) {
+        int prizeDoorNumber = random.nextInt(numberOfDoors);
 
-        List<Door> doors = new ArrayList<>(NUMBER_OF_DOORS);
-        for (int i = 0; i < NUMBER_OF_DOORS; i++) {
+        List<Door> doors = new ArrayList<>(numberOfDoors);
+        for (int i = 0; i < numberOfDoors; i++) {
             doors.add(new Door(i, prizeDoorNumber == i));
         }
 
