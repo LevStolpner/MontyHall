@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class MainClass {
 
     private static final Random random = new Random();
-    public static final PlayerStrategy[] strategies = {new RandomStrategy()};
+    public static final PlayerStrategy[] strategies = {new RandomStrategy(), new StubbornStrategy()};
     private static final int NUMBER_OF_RUNS = 10000;
     private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("##.##%");
 
