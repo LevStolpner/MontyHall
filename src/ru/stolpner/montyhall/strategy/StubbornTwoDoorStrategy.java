@@ -1,10 +1,12 @@
-package ru.stolpner.montyhall;
+package ru.stolpner.montyhall.strategy;
+
+import ru.stolpner.montyhall.Door;
 
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class RandomTwoDoorStrategy implements PlayerStrategy {
+public class StubbornTwoDoorStrategy implements PlayerStrategy {
 
     private static final Random random = new Random();
 
@@ -49,9 +51,8 @@ public class RandomTwoDoorStrategy implements PlayerStrategy {
                 return secondDoor.getNumber();
             }
 
-            //second door was opened, go nuts
-            int newRandomDoor = random.nextInt(closedDoors.size());
-            return closedDoors.get(newRandomDoor).getNumber();
+            //second door was opened, stick to the first door
+            return firstSelectedDoor;
         }
 
         if (lastChosenDoor.equals(secondSelectedDoor)) {
@@ -64,12 +65,10 @@ public class RandomTwoDoorStrategy implements PlayerStrategy {
                 return firstDoor.getNumber();
             }
 
-            //first door was opened, go nuts
-            int newRandomDoor = random.nextInt(closedDoors.size());
-            return closedDoors.get(newRandomDoor).getNumber();
+            //first door was opened, stick to the second door
+            return secondSelectedDoor;
         }
 
-        int newRandomDoor = random.nextInt(closedDoors.size());
-        return closedDoors.get(newRandomDoor).getNumber();
+        throw new IllegalStateException("Last chosen door was not one of the selected two!");
     }
 }

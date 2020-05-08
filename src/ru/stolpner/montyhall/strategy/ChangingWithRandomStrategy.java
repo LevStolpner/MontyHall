@@ -1,4 +1,6 @@
-package ru.stolpner.montyhall;
+package ru.stolpner.montyhall.strategy;
+
+import ru.stolpner.montyhall.Door;
 
 import java.util.ArrayList;
 import java.util.List;

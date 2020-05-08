@@ -1,5 +1,7 @@
 package ru.stolpner.montyhall;
 
+import ru.stolpner.montyhall.strategy.*;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.EnumSet;
