@@ -16,13 +16,14 @@ public class MainClass {
 
     public static void main(String[] args) {
         //TODO implement strategies
-        //  - always picking between 2 doors (always changing if one was opened)
+        //  - always picking between 3 doors (replacing the door that was opened)
         //  - always changing doors (never picking previous one)
+        //  - always picking between 2 doors (always changing if one was opened)
         //  - change once, wait once
         //  - change twice, wait once
         //  - change once, wait twice
 
-        for (int i = 3; i < 11; i++) {
+        for (int i = 4; i < 11; i++) {
             System.out.println("Number of doors=" + i + ".");
             for (PlayerStrategyType strategyType : strategyTypes) {
                 runGames(i, strategyType);
