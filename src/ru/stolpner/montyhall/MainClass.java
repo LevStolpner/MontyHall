@@ -94,6 +94,10 @@ public class MainClass {
                 return new FullChangingStrategy();
             case CHANGE_WAIT:
                 return new ChangeWaitStrategy();
+            case CHANGE_TWICE_WAIT:
+                return new ChangeTwiceWaitStrategy();
+            case CHANGE_WAIT_TWICE:
+                return new ChangeWaitTwiceStrategy();
             default:
                 throw new IllegalStateException("Unsupported strategy");
         }
