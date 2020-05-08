@@ -19,8 +19,6 @@ public class MainClass {
     public static void main(String[] args) {
         //TODO implement strategies
         //  - always picking between 3 doors (replacing the door that was opened)
-        //  - change twice, wait once
-        //  - change once, wait twice
 
         for (int i = 3; i < 11; i++) {
             System.out.println("Number of doors=" + i + ".");

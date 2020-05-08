@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class ChangeWaitStrategy implements PlayerStrategy {
+public class ChangeTwiceWaitStrategy implements PlayerStrategy {
 
     private static final Random random = new Random();
 
-    private boolean changeFlag = true;
+    private int changeCounter = 0;
 
     @Override
     public int chooseDoor(List<Door> doors, Integer lastChosenDoor) {
@@ -22,21 +22,21 @@ public class ChangeWaitStrategy implements PlayerStrategy {
             return closedDoors.get(0).getNumber();
         }
 
-        if (changeFlag) {
-            int chosenDoor = random.nextInt(closedDoors.size());
-            if (lastChosenDoor == null) {
-                return closedDoors.get(chosenDoor).getNumber();
-            }
+        if (changeCounter == 2) {
+            changeCounter = 0;
+            return lastChosenDoor;
+        }
 
-            while (lastChosenDoor.equals(closedDoors.get(chosenDoor).getNumber())) {
-                chosenDoor = random.nextInt(closedDoors.size());
-            }
-
-            changeFlag = false;
+        int chosenDoor = random.nextInt(closedDoors.size());
+        if (lastChosenDoor == null) {
             return closedDoors.get(chosenDoor).getNumber();
         }
 
-        changeFlag = true;
-        return lastChosenDoor;
+        while (lastChosenDoor.equals(closedDoors.get(chosenDoor).getNumber())) {
+            chosenDoor = random.nextInt(closedDoors.size());
+        }
+
+        changeCounter += 1;
+        return closedDoors.get(chosenDoor).getNumber();
     }
 }
