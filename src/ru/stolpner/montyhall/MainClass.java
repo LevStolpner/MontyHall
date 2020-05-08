@@ -16,14 +16,14 @@ public class MainClass {
 
     public static void main(String[] args) {
         //TODO implement strategies
+        //  - full changing strategy (trying to never pick something that was picked before)
         //  - always picking between 3 doors (replacing the door that was opened)
-        //  - always changing doors (never picking previous one)
         //  - always picking between 2 doors (always changing if one was opened)
         //  - change once, wait once
         //  - change twice, wait once
         //  - change once, wait twice
 
-        for (int i = 4; i < 11; i++) {
+        for (int i = 3; i < 11; i++) {
             System.out.println("Number of doors=" + i + ".");
             for (PlayerStrategyType strategyType : strategyTypes) {
                 runGames(i, strategyType);
@@ -87,6 +87,8 @@ public class MainClass {
                 return new StubbornTwoDoorStrategy();
             case RANDOM_TWO_DOOR:
                 return new RandomTwoDoorStrategy();
+            case CHANGING_DOOR:
+                return new ChangingDoorStrategy();
             default:
                 throw new IllegalStateException("Unsupported strategy");
         }

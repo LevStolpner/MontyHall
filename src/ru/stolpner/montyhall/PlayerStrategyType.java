@@ -2,10 +2,12 @@ package ru.stolpner.montyhall;
 
 public enum PlayerStrategyType {
     RANDOM("Random"),
+    RANDOM_TWO_DOOR("RandomTwoDoor"),
     STUBBORN("Stubborn"),
-    DYNAMIC_TWO_DOOR("DynamicTwoDoor"),
     STUBBORN_TWO_DOOR("StubbornTwoDoor"),
-    RANDOM_TWO_DOOR("RandomTwoDoor")
+    DYNAMIC_TWO_DOOR("DynamicTwoDoor"),
+    CHANGING_DOOR("ChangingDoor"),
+//    DYNAMIC_THREE_DOOR("DynamicThreeDoor")
     ;
 
     private final String name;
