@@ -9,12 +9,7 @@ public class RandomStrategy implements PlayerStrategy {
     private static final Random random = new Random();
 
     @Override
-    public String getName() {
-        return "Random";
-    }
-
-    @Override
-    public int chooseDoor(List<Door> doors) {
+    public int chooseDoor(List<Door> doors, Integer lastChosenDoor) {
         List<Door> doorsToChooseFrom = doors.stream()
                 .filter(Door::isClosed)
                 .collect(Collectors.toList());

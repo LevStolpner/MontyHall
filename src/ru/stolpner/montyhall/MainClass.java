@@ -2,6 +2,7 @@ package ru.stolpner.montyhall;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -9,7 +10,7 @@ import java.util.stream.Collectors;
 public class MainClass {
 
     private static final Random random = new Random();
-    public static final PlayerStrategy[] strategies = {new RandomStrategy(), new StubbornStrategy()};
+    public static final EnumSet<PlayerStrategyType> strategyTypes = EnumSet.allOf(PlayerStrategyType.class);
     private static final int NUMBER_OF_RUNS = 10000;
     private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("##.##%");
 
@@ -19,27 +20,15 @@ public class MainClass {
         //  - always picking between 2 doors (stubborn if one was opened)
         //  - always picking between 2 doors (random if one was opened)
         //  - always picking between 2 doors (always changing if one was opened)
-        //  - always picking between 3 doors (replacing doors if they are opened)
-        //  - always picking between 3 doors (more stubborn if more doors are opened)
-        //  - always picking between 3 doors (random if one was opened)
-        //  - always picking between 3 doors (always changing if one was opened)
-        //  - always picking between 4 doors (replacing doors if they are opened)
-        //  - always picking between 4 doors (more stubborn if more doors are opened)
-        //  - always picking between 4 doors (random if one was opened)
-        //  - always picking between 4 doors (always changing if one was opened)
         //  - always changing doors (never picking previous one)
         //  - change once, wait once
         //  - change twice, wait once
         //  - change once, wait twice
-        //  - increasing change with waits
-        //  - increasing wait with changes
-
-        //TODO strategy needs 1 more method -> needed amount of doors
 
         for (int i = 3; i < 11; i++) {
             System.out.println("Number of doors=" + i + ".");
-            for (PlayerStrategy strategy : strategies) {
-                runGames(i, strategy);
+            for (PlayerStrategyType strategyType : strategyTypes) {
+                runGames(i, strategyType);
             }
         }
     }
@@ -48,19 +37,21 @@ public class MainClass {
      * Запускает игры для определенного количества дверей с определенной стратегией
      *
      * @param numberOfDoors количество дверей
-     * @param strategy      стратегия выбора дверей
+     * @param strategyType  тип стратегии выбора дверей
      */
-    private static void runGames(int numberOfDoors, PlayerStrategy strategy) {
+    private static void runGames(int numberOfDoors, PlayerStrategyType strategyType) {
         int successCounter = 0;
         for (int i = 0; i < NUMBER_OF_RUNS; i++) {
             List<Door> doors = setupDoors(numberOfDoors);
+
+            PlayerStrategy strategy = createPlayerStrategy(strategyType);
             boolean success = playGame(doors, strategy);
             successCounter += success ? 1 : 0;
         }
         double successPercentage = successCounter / (double) NUMBER_OF_RUNS;
         String formattedPercentage = PERCENTAGE_FORMAT.format(successPercentage);
 
-        System.out.println(String.format("Strategy=%s. Success=%s", strategy.getName(), formattedPercentage));
+        System.out.println(String.format("Strategy=%s. Success=%s", strategyType.getName(), formattedPercentage));
     }
 
     /**
@@ -81,6 +72,25 @@ public class MainClass {
     }
 
     /**
+     * Создает новую стратегию на основе типа
+     *
+     * @param strategyType тип стратегии
+     * @return новая стратегия
+     */
+    private static PlayerStrategy createPlayerStrategy(PlayerStrategyType strategyType) {
+        switch (strategyType) {
+            case RANDOM:
+                return new RandomStrategy();
+            case STUBBORN:
+                return new StubbornStrategy();
+            case DYNAMIC_TWO_DOOR:
+                return new DynamicTwoDoorStrategy();
+            default:
+                throw new IllegalStateException("Unsupported strategy");
+        }
+    }
+
+    /**
      * Провести одну игру с заданными дверями и стратегией
      *
      * @param doors          двери
@@ -88,8 +98,10 @@ public class MainClass {
      * @return true, если игра выиграна, иначе false
      */
     private static boolean playGame(List<Door> doors, PlayerStrategy playerStrategy) {
+        Integer lastChosenDoor = null;
         while (true) {
-            int chosenDoor = playerStrategy.chooseDoor(doors);
+            int chosenDoor = playerStrategy.chooseDoor(doors, lastChosenDoor);
+            lastChosenDoor = chosenDoor;
 
             Result result = openDoor(doors, chosenDoor);
             switch (result) {

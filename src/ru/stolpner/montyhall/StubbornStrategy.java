@@ -11,12 +11,7 @@ public class StubbornStrategy implements PlayerStrategy {
     private Integer selectedDoor;
 
     @Override
-    public String getName() {
-        return "Stubborn";
-    }
-
-    @Override
-    public int chooseDoor(List<Door> doors) {
+    public int chooseDoor(List<Door> doors, Integer lastChosenDoor) {
         if (selectedDoor != null) {
             return selectedDoor;
         }
