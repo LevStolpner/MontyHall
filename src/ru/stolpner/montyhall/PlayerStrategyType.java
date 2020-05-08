@@ -6,6 +6,7 @@ public enum PlayerStrategyType {
     STUBBORN("Stubborn"),
     STUBBORN_TWO_DOOR("StubbornTwoDoor"),
     DYNAMIC_TWO_DOOR("DynamicTwoDoor"),
+    DYNAMIC_TWO_DOOR_WITH_CHANGING("DynamicTwoDoorWithChanging"),
     CHANGING("Changing"),
     CHANGING_WITH_RANDOM("ChangingWithRandom"),
     FULL_CHANGING("FullChanging"),

@@ -19,7 +19,6 @@ public class MainClass {
     public static void main(String[] args) {
         //TODO implement strategies
         //  - always picking between 3 doors (replacing the door that was opened)
-        //  - always picking between 2 doors (always changing if one was opened)
         //  - change once, wait once
         //  - change twice, wait once
         //  - change once, wait twice
@@ -80,14 +79,16 @@ public class MainClass {
         switch (strategyType) {
             case RANDOM:
                 return new RandomStrategy();
-            case STUBBORN:
-                return new StubbornStrategy();
-            case DYNAMIC_TWO_DOOR:
-                return new DynamicTwoDoorStrategy();
-            case STUBBORN_TWO_DOOR:
-                return new StubbornTwoDoorStrategy();
             case RANDOM_TWO_DOOR:
                 return new RandomTwoDoorStrategy();
+            case STUBBORN:
+                return new StubbornStrategy();
+            case STUBBORN_TWO_DOOR:
+                return new StubbornTwoDoorStrategy();
+            case DYNAMIC_TWO_DOOR:
+                return new DynamicTwoDoorStrategy();
+            case DYNAMIC_TWO_DOOR_WITH_CHANGING:
+                return new DynamicTwoDoorWithChangingStrategy();
             case CHANGING:
                 return new ChangingStrategy();
             case CHANGING_WITH_RANDOM:
