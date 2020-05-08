@@ -28,6 +28,12 @@ public class MainClass {
         //  - always picking between 4 doors (random if one was opened)
         //  - always picking between 4 doors (always changing if one was opened)
         //  - always changing doors (never picking previous one)
+        //  - change once, wait once
+        //  - change twice, wait once
+        //  - change once, wait twice
+        //  - increasing change with waits
+        //  - increasing wait with changes
+
         //TODO strategy needs 1 more method -> needed amount of doors
 
         for (int i = 3; i < 11; i++) {
