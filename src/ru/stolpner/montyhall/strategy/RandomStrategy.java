@@ -12,11 +12,11 @@ public class RandomStrategy implements PlayerStrategy {
 
     @Override
     public int chooseDoor(List<Door> doors, Integer lastChosenDoor) {
-        List<Door> doorsToChooseFrom = doors.stream()
+        List<Door> closedDoors = doors.stream()
                 .filter(Door::isClosed)
                 .collect(Collectors.toList());
 
-        int chosenDoor = random.nextInt(doorsToChooseFrom.size());
-        return doorsToChooseFrom.get(chosenDoor).getNumber();
+        int chosenDoor = random.nextInt(closedDoors.size());
+        return closedDoors.get(chosenDoor).getNumber();
     }
 }

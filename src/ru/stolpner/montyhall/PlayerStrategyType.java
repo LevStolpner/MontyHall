@@ -10,6 +10,7 @@ public enum PlayerStrategyType {
     CHANGING("Changing"),
     CHANGING_WITH_RANDOM("ChangingWithRandom"),
     FULL_CHANGING("FullChanging"),
+    CHANGE_WAIT("ChangeWait")
 //    DYNAMIC_THREE_DOOR("DynamicThreeDoor")
     ;
 
