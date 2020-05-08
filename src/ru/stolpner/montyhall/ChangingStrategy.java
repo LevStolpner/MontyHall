@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class ChangingDoorStrategy implements PlayerStrategy {
+public class ChangingStrategy implements PlayerStrategy {
 
     private static final Random random = new Random();
 

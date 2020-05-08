@@ -16,7 +16,6 @@ public class MainClass {
 
     public static void main(String[] args) {
         //TODO implement strategies
-        //  - full changing strategy (trying to never pick something that was picked before)
         //  - always picking between 3 doors (replacing the door that was opened)
         //  - always picking between 2 doors (always changing if one was opened)
         //  - change once, wait once
@@ -87,8 +86,12 @@ public class MainClass {
                 return new StubbornTwoDoorStrategy();
             case RANDOM_TWO_DOOR:
                 return new RandomTwoDoorStrategy();
-            case CHANGING_DOOR:
-                return new ChangingDoorStrategy();
+            case CHANGING:
+                return new ChangingStrategy();
+            case CHANGING_WITH_RANDOM:
+                return new ChangingWithRandomStrategy();
+            case FULL_CHANGING:
+                return new FullChangingStrategy();
             default:
                 throw new IllegalStateException("Unsupported strategy");
         }
