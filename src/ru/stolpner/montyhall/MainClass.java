@@ -19,6 +19,10 @@ public class MainClass {
     public static void main(String[] args) {
         //TODO implement strategies
         //  - always picking between 3 doors (replacing the door that was opened)
+        //  - wait till the last one, and then change once
+        //TODO increase number of games, compare statistics automatically, range algorithms by percentage
+        //TODO compare statistics to 1-1/e (0.63212055882)
+        //TODO refactor code to easily readable, make repo more "attractive"
 
         for (int i = 3; i < 11; i++) {
             System.out.println("Number of doors=" + i + ".");
