@@ -1,47 +1,60 @@
 package ru.stolpner.montyhall;
 
-import ru.stolpner.montyhall.strategy.*;
+import ru.stolpner.montyhall.strategy.ChangeLastMomentStrategy;
+import ru.stolpner.montyhall.strategy.ChangeTwiceWaitStrategy;
+import ru.stolpner.montyhall.strategy.ChangeWaitStrategy;
+import ru.stolpner.montyhall.strategy.ChangeWaitTwiceStrategy;
+import ru.stolpner.montyhall.strategy.ChangingStrategy;
+import ru.stolpner.montyhall.strategy.ChangingWithRandomStrategy;
+import ru.stolpner.montyhall.strategy.DynamicTwoDoorStrategy;
+import ru.stolpner.montyhall.strategy.DynamicTwoDoorWithChangingStrategy;
+import ru.stolpner.montyhall.strategy.FullChangingStrategy;
+import ru.stolpner.montyhall.strategy.PlayerStrategy;
+import ru.stolpner.montyhall.strategy.RandomStrategy;
+import ru.stolpner.montyhall.strategy.RandomTwoDoorStrategy;
+import ru.stolpner.montyhall.strategy.StubbornStrategy;
+import ru.stolpner.montyhall.strategy.StubbornTwoDoorStrategy;
 
-import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class MainClass {
 
     private static final Random random = new Random();
     public static final EnumSet<PlayerStrategyType> strategyTypes = EnumSet.allOf(PlayerStrategyType.class);
+    private static final int NUMBER_OF_DOORS = 20;
     private static final int NUMBER_OF_RUNS = 10000;
 
     public static void main(String[] args) {
-        //TODO increase number of games and doors, compare statistics automatically, range algorithms by percentage
         //TODO refactor code to easily readable, make repo more "attractive"
 
-        for (int i = 3; i < 11; i++) {
-            System.out.println("Number of doors=" + i + ".");
+        System.out.printf("Number of doors=%d, number of runs=%d%n", NUMBER_OF_DOORS, NUMBER_OF_RUNS);
 
-            List<StrategyResult> strategyResults = new ArrayList<>();
-            for (PlayerStrategyType strategyType : strategyTypes) {
-                StrategyResult result = runGames(i, strategyType);
-                strategyResults.add(result);
-            }
-
-            strategyResults.stream()
-                    .sorted(Comparator.comparingDouble(StrategyResult::getSuccessPercentage).reversed())
-                    .forEach(System.out::println);
+        List<StrategyResult> strategyResults = new ArrayList<>();
+        for (PlayerStrategyType strategyType : strategyTypes) {
+            StrategyResult result = runGames(strategyType);
+            strategyResults.add(result);
         }
+
+        strategyResults.stream()
+                .sorted(Comparator.comparingDouble(StrategyResult::getSuccessPercentage).reversed())
+                .forEach(System.out::println);
     }
 
     /**
-     * Запускает игры для определенного количества дверей с определенной стратегией
+     * Запускает игры с определенной стратегией
      *
-     * @param numberOfDoors количество дверей
      * @param strategyType  тип стратегии выбора дверей
      * @return результат работы стратегии
      */
-    private static StrategyResult runGames(int numberOfDoors, PlayerStrategyType strategyType) {
+    private static StrategyResult runGames(PlayerStrategyType strategyType) {
         int successCounter = 0;
         for (int i = 0; i < NUMBER_OF_RUNS; i++) {
-            List<Door> doors = setupDoors(numberOfDoors);
+            List<Door> doors = setupDoors();
 
             PlayerStrategy strategy = createPlayerStrategy(strategyType);
             boolean success = playGame(doors, strategy);
@@ -55,14 +68,13 @@ public class MainClass {
     /**
      * Подготовить список дверей для игры
      *
-     * @param numberOfDoors количество дверей
      * @return список дверей
      */
-    private static List<Door> setupDoors(int numberOfDoors) {
-        int prizeDoorNumber = random.nextInt(numberOfDoors);
+    private static List<Door> setupDoors() {
+        int prizeDoorNumber = random.nextInt(NUMBER_OF_DOORS);
 
-        List<Door> doors = new ArrayList<>(numberOfDoors);
-        for (int i = 0; i < numberOfDoors; i++) {
+        List<Door> doors = new ArrayList<>(NUMBER_OF_DOORS);
+        for (int i = 0; i < NUMBER_OF_DOORS; i++) {
             doors.add(new Door(i, prizeDoorNumber == i));
         }
 
