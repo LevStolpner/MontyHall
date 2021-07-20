@@ -3,10 +3,7 @@ package ru.stolpner.montyhall;
 import ru.stolpner.montyhall.strategy.*;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MainClass {
@@ -14,17 +11,23 @@ public class MainClass {
     private static final Random random = new Random();
     public static final EnumSet<PlayerStrategyType> strategyTypes = EnumSet.allOf(PlayerStrategyType.class);
     private static final int NUMBER_OF_RUNS = 10000;
-    private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("##.##%");
 
     public static void main(String[] args) {
-        //TODO increase number of games, compare statistics automatically, range algorithms by percentage
+        //TODO increase number of games and doors, compare statistics automatically, range algorithms by percentage
         //TODO refactor code to easily readable, make repo more "attractive"
 
         for (int i = 3; i < 11; i++) {
             System.out.println("Number of doors=" + i + ".");
+
+            List<StrategyResult> strategyResults = new ArrayList<>();
             for (PlayerStrategyType strategyType : strategyTypes) {
-                runGames(i, strategyType);
+                StrategyResult result = runGames(i, strategyType);
+                strategyResults.add(result);
             }
+
+            strategyResults.stream()
+                    .sorted(Comparator.comparingDouble(StrategyResult::getSuccessPercentage).reversed())
+                    .forEach(System.out::println);
         }
     }
 
@@ -33,8 +36,9 @@ public class MainClass {
      *
      * @param numberOfDoors количество дверей
      * @param strategyType  тип стратегии выбора дверей
+     * @return результат работы стратегии
      */
-    private static void runGames(int numberOfDoors, PlayerStrategyType strategyType) {
+    private static StrategyResult runGames(int numberOfDoors, PlayerStrategyType strategyType) {
         int successCounter = 0;
         for (int i = 0; i < NUMBER_OF_RUNS; i++) {
             List<Door> doors = setupDoors(numberOfDoors);
@@ -44,9 +48,8 @@ public class MainClass {
             successCounter += success ? 1 : 0;
         }
         double successPercentage = successCounter / (double) NUMBER_OF_RUNS;
-        String formattedPercentage = PERCENTAGE_FORMAT.format(successPercentage);
 
-        System.out.printf("Strategy=%s. Success=%s%n", strategyType.getName(), formattedPercentage);
+        return new StrategyResult(strategyType.getName(), successPercentage);
     }
 
     /**
