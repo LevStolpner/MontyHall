@@ -17,11 +17,7 @@ public class MainClass {
     private static final DecimalFormat PERCENTAGE_FORMAT = new DecimalFormat("##.##%");
 
     public static void main(String[] args) {
-        //TODO implement strategies
-        //  - always picking between 3 doors (replacing the door that was opened)
-        //  - wait till the last one, and then change once
         //TODO increase number of games, compare statistics automatically, range algorithms by percentage
-        //TODO compare statistics to 1-1/e (0.63212055882)
         //TODO refactor code to easily readable, make repo more "attractive"
 
         for (int i = 3; i < 11; i++) {
@@ -50,7 +46,7 @@ public class MainClass {
         double successPercentage = successCounter / (double) NUMBER_OF_RUNS;
         String formattedPercentage = PERCENTAGE_FORMAT.format(successPercentage);
 
-        System.out.println(String.format("Strategy=%s. Success=%s", strategyType.getName(), formattedPercentage));
+        System.out.printf("Strategy=%s. Success=%s%n", strategyType.getName(), formattedPercentage);
     }
 
     /**
@@ -77,34 +73,22 @@ public class MainClass {
      * @return новая стратегия
      */
     private static PlayerStrategy createPlayerStrategy(PlayerStrategyType strategyType) {
-        switch (strategyType) {
-            case RANDOM:
-                return new RandomStrategy();
-            case RANDOM_TWO_DOOR:
-                return new RandomTwoDoorStrategy();
-            case STUBBORN:
-                return new StubbornStrategy();
-            case STUBBORN_TWO_DOOR:
-                return new StubbornTwoDoorStrategy();
-            case DYNAMIC_TWO_DOOR:
-                return new DynamicTwoDoorStrategy();
-            case DYNAMIC_TWO_DOOR_WITH_CHANGING:
-                return new DynamicTwoDoorWithChangingStrategy();
-            case CHANGING:
-                return new ChangingStrategy();
-            case CHANGING_WITH_RANDOM:
-                return new ChangingWithRandomStrategy();
-            case FULL_CHANGING:
-                return new FullChangingStrategy();
-            case CHANGE_WAIT:
-                return new ChangeWaitStrategy();
-            case CHANGE_TWICE_WAIT:
-                return new ChangeTwiceWaitStrategy();
-            case CHANGE_WAIT_TWICE:
-                return new ChangeWaitTwiceStrategy();
-            default:
-                throw new IllegalStateException("Unsupported strategy");
-        }
+        return switch (strategyType) {
+            case RANDOM -> new RandomStrategy();
+            case RANDOM_TWO_DOOR -> new RandomTwoDoorStrategy();
+            case STUBBORN -> new StubbornStrategy();
+            case STUBBORN_TWO_DOOR -> new StubbornTwoDoorStrategy();
+            case DYNAMIC_TWO_DOOR -> new DynamicTwoDoorStrategy();
+            case DYNAMIC_TWO_DOOR_WITH_CHANGING -> new DynamicTwoDoorWithChangingStrategy();
+            case CHANGING -> new ChangingStrategy();
+            case CHANGING_WITH_RANDOM -> new ChangingWithRandomStrategy();
+            case FULL_CHANGING -> new FullChangingStrategy();
+            case CHANGE_WAIT -> new ChangeWaitStrategy();
+            case CHANGE_TWICE_WAIT -> new ChangeTwiceWaitStrategy();
+            case CHANGE_WAIT_TWICE -> new ChangeWaitTwiceStrategy();
+            case CHANGE_LAST_MOMENT -> new ChangeLastMomentStrategy();
+            default -> throw new IllegalStateException("Unsupported strategy");
+        };
     }
 
     /**

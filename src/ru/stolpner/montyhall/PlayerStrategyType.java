@@ -13,7 +13,7 @@ public enum PlayerStrategyType {
     CHANGE_WAIT("ChangeWait"),
     CHANGE_WAIT_TWICE("ChangeWaitTwice"),
     CHANGE_TWICE_WAIT("ChangeTwiceWait"),
-//    DYNAMIC_THREE_DOOR("DynamicThreeDoor")
+    CHANGE_LAST_MOMENT("ChangeLastMoment"),
     ;
 
     private final String name;
