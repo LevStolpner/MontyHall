@@ -30,8 +30,6 @@ public class MainClass {
     private static final int NUMBER_OF_RUNS = 10000;
 
     public static void main(String[] args) {
-        //TODO refactor code to easily readable, make repo more "attractive"
-
         System.out.printf("Number of doors=%d, number of runs=%d%n", NUMBER_OF_DOORS, NUMBER_OF_RUNS);
 
         List<StrategyResult> strategyResults = new ArrayList<>();
@@ -46,18 +44,16 @@ public class MainClass {
     }
 
     /**
-     * Запускает игры с определенной стратегией
+     * Runs games with selected strategy
      *
-     * @param strategyType  тип стратегии выбора дверей
-     * @return результат работы стратегии
+     * @param strategyType type of strategy
+     * @return result of a strategy on a number of games
      */
     private static StrategyResult runGames(PlayerStrategyType strategyType) {
         int successCounter = 0;
         for (int i = 0; i < NUMBER_OF_RUNS; i++) {
-            List<Door> doors = setupDoors();
-
             PlayerStrategy strategy = createPlayerStrategy(strategyType);
-            boolean success = playGame(doors, strategy);
+            boolean success = playGame(strategy);
             successCounter += success ? 1 : 0;
         }
         double successPercentage = successCounter / (double) NUMBER_OF_RUNS;
@@ -66,26 +62,10 @@ public class MainClass {
     }
 
     /**
-     * Подготовить список дверей для игры
+     * Creates new strategy object depending on selected type
      *
-     * @return список дверей
-     */
-    private static List<Door> setupDoors() {
-        int prizeDoorNumber = random.nextInt(NUMBER_OF_DOORS);
-
-        List<Door> doors = new ArrayList<>(NUMBER_OF_DOORS);
-        for (int i = 0; i < NUMBER_OF_DOORS; i++) {
-            doors.add(new Door(i, prizeDoorNumber == i));
-        }
-
-        return doors;
-    }
-
-    /**
-     * Создает новую стратегию на основе типа
-     *
-     * @param strategyType тип стратегии
-     * @return новая стратегия
+     * @param strategyType type of strategy for a game
+     * @return new strategy object
      */
     private static PlayerStrategy createPlayerStrategy(PlayerStrategyType strategyType) {
         return switch (strategyType) {
@@ -107,14 +87,15 @@ public class MainClass {
     }
 
     /**
-     * Провести одну игру с заданными дверями и стратегией
+     * Runs a single game with given list of doors and selected strategy
      *
-     * @param doors          двери
-     * @param playerStrategy стратегия выбора дверей
-     * @return true, если игра выиграна, иначе false
+     * @param playerStrategy strategy for choosing a door
+     * @return true, if game is won
      */
-    private static boolean playGame(List<Door> doors, PlayerStrategy playerStrategy) {
+    private static boolean playGame(PlayerStrategy playerStrategy) {
         Integer lastChosenDoor = null;
+        List<Door> doors = setupDoors();
+
         while (true) {
             int chosenDoor = playerStrategy.chooseDoor(doors, lastChosenDoor);
             lastChosenDoor = chosenDoor;
@@ -132,11 +113,28 @@ public class MainClass {
     }
 
     /**
-     * Пытается открыть произвольную дверь без приза
+     * Prepares a list of doors for a game
+     * One door has a prize, other have nothing
      *
-     * @param doors      двери
-     * @param chosenDoor выбранная игроком дверь
-     * @return результат попытки открытия двери
+     * @return list of door objects
+     */
+    private static List<Door> setupDoors() {
+        int prizeDoorNumber = random.nextInt(NUMBER_OF_DOORS);
+
+        List<Door> doors = new ArrayList<>(NUMBER_OF_DOORS);
+        for (int i = 0; i < NUMBER_OF_DOORS; i++) {
+            doors.add(new Door(i, prizeDoorNumber == i));
+        }
+
+        return doors;
+    }
+
+    /**
+     * Tries to open any closed door without a prize (a Host play)
+     *
+     * @param doors      doors
+     * @param chosenDoor door, chosen by a player
+     * @return result of opening door
      */
     private static Result openDoor(List<Door> doors, int chosenDoor) {
         List<Door> doorsToOpen = doors.stream()
@@ -162,7 +160,7 @@ public class MainClass {
     }
 
     /**
-     * Результат попытки открытия двери
+     * Result of an attempt to open a door
      */
     enum Result {
         DOOR_OPENED,

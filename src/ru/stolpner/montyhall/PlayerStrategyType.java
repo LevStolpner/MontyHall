@@ -1,5 +1,8 @@
 package ru.stolpner.montyhall;
 
+/**
+ * Enum of strategy types
+ */
 public enum PlayerStrategyType {
     RANDOM("Random"),
     RANDOM_TWO_DOOR("RandomTwoDoor"),

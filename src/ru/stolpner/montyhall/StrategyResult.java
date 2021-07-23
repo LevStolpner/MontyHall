@@ -2,6 +2,9 @@ package ru.stolpner.montyhall;
 
 import java.text.DecimalFormat;
 
+/**
+ * Result of strategy after a number of games
+ */
 public class StrategyResult {
     private final String strategyName;
     private final double successPercentage;
